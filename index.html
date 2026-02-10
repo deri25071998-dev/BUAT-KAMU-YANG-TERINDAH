@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Special for You 💖</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Sacramento&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(to bottom, #ff9a9e 0%, #fecfef 100%);
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            margin: 0;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(255, 77, 109, 0.3);
+            z-index: 10;
+            max-width: 85%;
+            width: 400px;
+            position: relative;
+        }
+
+        .heart {
+            font-size: 60px;
+            animation: heartbeat 1.2s infinite;
+            margin-bottom: 15px;
+        }
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            20% { transform: scale(1.2); }
+            40% { transform: scale(1); }
+        }
+
+        h1 { font-family: 'Sacramento', cursive; color: #ff4d6d; font-size: 2.5em; margin: 0; }
+
+        #typing-text {
+            font-size: 1.1em;
+            color: #ff4d6d;
+            margin-top: 15px;
+            min-height: 80px;
+            line-height: 1.5;
+        }
+
+        .btn-group {
+            margin-top: 20px;
+            display: none; /* Muncul setelah ngetik selesai */
+        }
+
+        .btn {
+            background-color: #ff4d6d;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            display: inline-block;
+            margin: 10px;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4);
+        }
+        .btn:hover { transform: scale(1.1); background-color: #ff758f; }
+
+        /* Efek Kelopak */
+        .petal {
+            position: fixed;
+            top: -10%;
+            z-index: 1;
+            animation: falling linear infinite;
+        }
+        @keyframes falling {
+            0% { top: -10%; transform: translateX(0) rotate(0deg); }
+            100% { top: 110%; transform: translateX(100px) rotate(360deg); }
+        }
+
+        #response-area img {
+            border-radius: 15px;
+            margin-top: 15px;
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<audio id="loveSong" loop>
+    <source src="https://www.bensound.com/bensound-music/bensound-love.mp3" type="audio/mpeg">
+</audio>
+
+<div class="container" id="main-card">
+    <div class="heart">💖</div>
+    
+    <div id="content-area">
+        <h1>Hai Cantik...</h1>
+        <div id="typing-text"></div>
+        
+        <div class="btn-group" id="buttons">
+            <button class="btn" onclick="terima()">MAU BANGET! ❤️</button>
+            <button class="btn" style="background-color: #aaa;" onclick="tolak()" id="btn-no">Nanti dulu..</button>
+        </div>
+    </div>
+
+    <div id="response-area" style="display: none;">
+        <h2 id="res-title"></h2>
+        <p id="res-desc"></p>
+        <div id="res-img"></div>
+        <br>
+        <button class="btn" onclick="location.reload()">Ulangi Momen ✨</button>
+    </div>
+</div>
+
+<script>
+    // 1. Typing Effect
+    const textElement = document.getElementById("typing-text");
+    const message = "Aku cuma mau bilang kalau hadirmu itu seperti pelangi setelah hujan... 🌈 \n Maukah kamu terus menemaniku dalam suka maupun duka? (˶ᵔ ᵕ ᵔ˶)";
+    let index = 0;
+
+    function typeWriter() {
+        if (index < message.length) {
+            if (message.charAt(index) === "\n") {
+                textElement.innerHTML += "<br>";
+            } else {
+                textElement.innerHTML += message.charAt(index);
+            }
+            index++;
+            setTimeout(typeWriter, 60);
+        } else {
+            document.getElementById("buttons").style.display = "block";
+        }
+    }
+
+    // 2. Logika Tombol
+    function terima() {
+        document.getElementById("loveSong").play();
+        document.getElementById("content-area").style.display = "none";
+        document.getElementById("response-area").style.display = "block";
+        
+        document.getElementById("res-title").innerHTML = "YAY! I Love You More! 🥰✨";
+        document.getElementById("res-desc").innerHTML = "Makasih ya udah kasih aku kesempatan. Janji deh bakal bikin kamu bahagia terus! (づ｡◕‿‿◕｡)づ";
+        document.getElementById("res-img").innerHTML = '<img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHY5eGxxMmx5eGxxMmx5eGxxMmx5eGxxMmx5eGxxMmx5eGxxMmx5JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/KztT2c4u8mYYUiCiS0/giphy.gif" width="180">';
+    }
+
+    function tolak() {
+        // Efek lucu: tombol "Tidak" mengecil setiap diklik
+        let btnNo = document.getElementById("btn-no");
+        btnNo.style.transform = "scale(0.8)";
+        alert("Ups! Tombol ini rusak, coba tombol yang satunya lagi ya? 😜👉👈");
+    }
+
+    // 3. Kelopak Bunga
+    function createPetal() {
+        const petal = document.createElement('div');
+        const petals = ['🌸', '❤️', '✨', '💖'];
+        petal.className = 'petal';
+        petal.innerHTML = petals[Math.floor(Math.random() * petals.length)];
+        petal.style.left = Math.random() * 100 + 'vw';
+        petal.style.animationDuration = Math.random() * 3 + 2 + 's';
+        petal.style.opacity = Math.random();
+        petal.style.fontSize = Math.random() * 20 + 10 + 'px';
+        document.body.appendChild(petal);
+        setTimeout(() => { petal.remove(); }, 5000);
+    }
+
+    window.onload = () => {
+        typeWriter();
+        setInterval(createPetal, 300);
+    };
+</script>
+
+</body>
+</html>
